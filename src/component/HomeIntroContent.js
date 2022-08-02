@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { StyledNavLink } from './StyledComponents'
+import { StyledNavLink, Colors, StyledButton } from './StyledComponents'
 
 const HomeTitle = styled.h1`
-  color: #00296B;
+  color: ${Colors.primary};
   font-size: 4rem;
 `
 
@@ -11,22 +11,18 @@ const HomeContent = styled.h2`
   color: white;
 `
 
-const StyledButton = styled.button`
-  background-color: #fc7802;
+
+
+const SpecialWord = styled.span`
   color: white;
-  font-size: 18px;
-  padding: 10px;
-  border: none;
-  border-radius: 5%;
-  cursor: pointer;
 `
 
 function HomeIntroContent() {
   return (
     <>
-        <HomeTitle>Back to School Deals!</HomeTitle>
-        <HomeContent>Start the new school year by saving on the lastest electronics</HomeContent>
-        <StyledNavLink to='/Electronics'>
+        <HomeTitle>Back to <SpecialWord>School</SpecialWord> <br /> Deals!</HomeTitle>
+        <HomeContent>Start the new school year <br />by saving on the lastest <br />electronics</HomeContent>
+        <StyledNavLink to='/Home/Electronics'>
           <StyledButton>Shop Now</StyledButton>
         </StyledNavLink>
     </>

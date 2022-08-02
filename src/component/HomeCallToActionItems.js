@@ -3,14 +3,13 @@ import styled from 'styled-components'
 import { StyledNavLink } from './StyledComponents'
 
 const CallToActionItems = styled.div`
-  background-color:  #003F88;
   margin-right: 10px;
   margin-top: auto;
   margin-bottom: auto;
   border-radius: 15%;
   display: flex;
   width: 100%;
-  height: 90%;
+  height: 100%;
   justify-content: center;
   align-items: center;
   background-image: url(${props => props.img});
@@ -43,7 +42,7 @@ const createValidUrl = (categorie) => {
 const HomeCallToActionItems = ({categorie, img}) => {
   return (
     <CallToActionItems img={img}>
-        <StyledNavLink to={createValidUrl(categorie)} >
+        <StyledNavLink to={`Home/${createValidUrl(categorie)}`} >
           <h2>{categorie}</h2>
         </StyledNavLink>
     </CallToActionItems>
