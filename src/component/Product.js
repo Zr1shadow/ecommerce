@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import loader from "../App.css"
+import ProductCard from './ProductCard'
 import Loader from "../Loader"
+
 const Product = (props) => {
     const [isLoading, setIsLoading] = useState(false)
     const [product, setProducts] = useState([])
@@ -13,7 +14,7 @@ const Product = (props) => {
             const url = `https://fakestoreapi.com/products/${id}`
             const res = await fetch(url)
             const data = await res.json()
-            console.log(data)
+            // console.log(data)
             // console.log("useEffect runs Twice on mount. To remove delete </React.StrictMode> from index.js")
             setProducts(data)
             setIsLoading(false)
@@ -23,7 +24,7 @@ const Product = (props) => {
   return (
     <>
       {!isLoading 
-        ? <div>{product.title}</div>
+        ? <ProductCard {...product}/>
         : <Loader />
       }
     </>
