@@ -55,8 +55,14 @@ const ProductCard = (props) => {
 
     const updateQty = () => {
         if(cart[vaildateItem].id === props.id) {
-            console.log(`cartNumber: ${cart[vaildateItem].quantity} itemNum: ${Qty} = ${cart[vaildateItem].quantity + Qty}`)     
-            const newQty=(cart[vaildateItem].quantity = cart[vaildateItem].quantity + Qty)
+            const stateCopy = [...cart]
+            const newQty = cart[vaildateItem].quantity + Qty
+            stateCopy[vaildateItem] = {...stateCopy[vaildateItem], quantity: newQty}
+            setCart(stateCopy)
+            // console.log(`cartNumber: ${cart[vaildateItem].quantity} itemNum: ${Qty} = ${cart[vaildateItem].quantity + Qty}`)     
+           
+            // cosnt update = 
+            // setCart([...cart, cart[vaildateItem].quantity = newQty])
             console.log(cart) 
         }
     }
@@ -79,9 +85,9 @@ const ProductCard = (props) => {
         
         // console.log(item[0].id)
         if( cart.length !== 0) {
-            console.log('not empty')
+            // console.log('not empty')
             
-            console.log(vaildateItem)
+            // console.log(vaildateItem)
             checkIfItemExist()
         } else {
             
