@@ -5,6 +5,8 @@ import { CartContext } from "../context/CartContext"
 import { StyledButton } from '../component/StyledComponents'
 import CartWidget from "./CartWidget"
 
+import Test from "./Test"
+
 const ProductCardDiv = styled.div`
     display: grid;
     grid-template-columns: 3fr 1.5fr;
@@ -40,23 +42,31 @@ const ProductCard = (props) => {
     const {title, image, description, price, category, rating} = props
     const { cart, setCart } = useContext(CartContext)
     const [ item, setItem ] = useState({})
+    const [Qty, setQty] = useState({value: 1})
     const vaildateItem = cart.findIndex((cartItem) => cartItem.id===props.id )
-    let Qty = 1
+    // let Qty;
     
-    const getQty = (event) => {
-        Qty = Number(event.target.value)
+    const handleQtyChange=(event) => {
+        setQty({value: event.target.value})
+        console.log(Qty.value)
+    }
+
+    const convertQtyToInt = (event) => {
+        console.log(Qty.value)
+        Qty.value = Number(event.target.value)
     }
 
     const appendQtyToCart = () => {
         const newProps = {...props}
-        newProps.quantity = Qty 
+        newProps.quantity = Qty.value 
         setCart([...cart, newProps])
     }
 
     const updateQty = () => {
         if(cart[vaildateItem].id === props.id) {
+            console.log(Qty.value)
             const stateCopy = [...cart]
-            const newQty = cart[vaildateItem].quantity + Qty
+            const newQty = cart[vaildateItem].quantity + Qty.value
             stateCopy[vaildateItem] = {...stateCopy[vaildateItem], quantity: newQty}
             setCart(stateCopy)
             // console.log(`cartNumber: ${cart[vaildateItem].quantity} itemNum: ${Qty} = ${cart[vaildateItem].quantity + Qty}`)     
@@ -108,7 +118,8 @@ const ProductCard = (props) => {
                 </div>
                 <p>{description}</p>
                 {/* Need to make this its on component */}
-                <select name="Qty" onChange={getQty}>   
+                {/* defaultValue make react keep the new Qty as the new default selected value so the user doesn't have to keep changing it back */}
+                <select name="Qty" value={Qty.value} onChange={convertQtyToInt}>   
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -120,6 +131,7 @@ const ProductCard = (props) => {
         <div>
             <CartWidget />
         </div>
+        {/* <Test /> */}
     </ProductCardDiv>
   )
 }
