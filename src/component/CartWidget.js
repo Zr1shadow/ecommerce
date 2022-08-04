@@ -37,10 +37,21 @@ const Line = styled.hr`
 
 
 const CartWidget = () => {
-  const {cart} = useContext(CartContext)
+  const {cart, setCart} = useContext(CartContext)
   useEffect(() => {
     
 }, [cart.quantity])
+const deleteItemFromCart = (item) => {
+  console.log(cart)
+  const stateCopy = [...cart]
+  const index = stateCopy.findIndex((cartItem) => 
+      { console.log(`Cart ID= ${cartItem.id} cartItem = ${item}`)
+      return cartItem.id===item}
+      )
+  console.log(` index: ${index}`)
+  stateCopy.splice(index, 1)
+  setCart(stateCopy)
+}
   return (
     <CartContainer>
       <h2>Cart({cart.length})</h2>
@@ -49,7 +60,7 @@ const CartWidget = () => {
        cart?.map((item, key) => (
         <CartItems key={key}> 
         <CardTitleSec>
-            <h5>{item.title}</h5> <FontAwesomeIcon className='clickable' icon={faTrash} />
+            <h5>{item.title}</h5> <FontAwesomeIcon className='clickable' icon={faTrash} onClick={() => deleteItemFromCart(item.id)} />
           </CardTitleSec>
             <p>Qty: {item.quantity}</p>
             <p>Price: ${item.price}</p>

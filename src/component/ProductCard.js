@@ -43,17 +43,12 @@ const ProductCard = (props) => {
     const { cart, setCart } = useContext(CartContext)
     const [ item, setItem ] = useState({})
     const [Qty, setQty] = useState({value: 1})
-    const vaildateItem = cart.findIndex((cartItem) => cartItem.id===props.id )
-    // let Qty;
     
-    const handleQtyChange=(event) => {
-        setQty({value: event.target.value})
-        console.log(Qty.value)
-    }
-
+    
     const convertQtyToInt = (event) => {
         console.log(Qty.value)
         Qty.value = Number(event.target.value)
+        // setQty({value: event.target.value})
     }
 
     const appendQtyToCart = () => {
@@ -63,28 +58,27 @@ const ProductCard = (props) => {
     }
 
     const updateQty = () => {
+        const vaildateItem = cart.findIndex((cartItem) => cartItem.id===props.id )
         if(cart[vaildateItem].id === props.id) {
             console.log(Qty.value)
             const stateCopy = [...cart]
             const newQty = cart[vaildateItem].quantity + Qty.value
             stateCopy[vaildateItem] = {...stateCopy[vaildateItem], quantity: newQty}
             setCart(stateCopy)
-            // console.log(`cartNumber: ${cart[vaildateItem].quantity} itemNum: ${Qty} = ${cart[vaildateItem].quantity + Qty}`)     
-           
-            // cosnt update = 
-            // setCart([...cart, cart[vaildateItem].quantity = newQty])
+            
             console.log(cart) 
         }
     }
 
     const checkIfItemExist = () => {
+        const vaildateItem = cart.findIndex((cartItem) => cartItem.id===props.id )
         if(vaildateItem === -1) {
             appendQtyToCart()
-            console.log("CheckIfItemExist")
+            // console.log("CheckIfItemExist")
         }
         else {
             console.log(vaildateItem)
-            console.log("updateQty")
+            // console.log("updateQty")
             updateQty()
         }
     }
@@ -102,9 +96,20 @@ const ProductCard = (props) => {
         } else {
             
             appendQtyToCart()
-            console.log(cart)
-        }
-        
+            
+        }   
+    }
+
+    const deleteItemFromCart = (item) => {
+        console.log(cart)
+        const stateCopy = [...cart]
+        const index = stateCopy.findIndex((cartItem) => 
+            { console.log(`Cart ID= ${cartItem.id} Props ID= ${item}`)
+            return cartItem.id===props.id}
+            )
+        console.log(` index: ${index}`)
+        stateCopy.splice(index)
+        setCart(stateCopy)
     }
   return (
     <ProductCardDiv>
@@ -119,7 +124,7 @@ const ProductCard = (props) => {
                 <p>{description}</p>
                 {/* Need to make this its on component */}
                 {/* defaultValue make react keep the new Qty as the new default selected value so the user doesn't have to keep changing it back */}
-                <select name="Qty" value={Qty.value} onChange={convertQtyToInt}>   
+                <select name="Qty"  onChange={convertQtyToInt}>   
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -129,7 +134,7 @@ const ProductCard = (props) => {
             </div>
         </ProductCardContent>
         <div>
-            <CartWidget />
+            <CartWidget cart= {cart} deleteItemFromCart = {deleteItemFromCart}/>
         </div>
         {/* <Test /> */}
     </ProductCardDiv>
