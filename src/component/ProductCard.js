@@ -6,6 +6,7 @@ import { StyledButton } from '../component/StyledComponents'
 import CartWidget from "./CartWidget"
 
 import Test from "./Test"
+import Checkout from "./Checkout"
 
 const ProductCardDiv = styled.div`
     display: grid;
@@ -18,17 +19,17 @@ const ProductCardDiv = styled.div`
 `
 const ProductCardContent = styled.div`
     display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 90vh;
     /* flex-direction: column;
-    align-items: flex-start;
-    padding-left: 20px;
-    justify-content: flex-start; */
-    @media screen {
-     flex-direction:column;
-    }
+    padding-left: 20px; */
+    justify-content: center;
 `
 const ProductImg = styled.img`
-  width: 90%;
-  height: 50%;
+  width: 60%;
+  margin: auto;
+  height: 80%;
 `
 
 const CartSection = styled.div`
@@ -41,7 +42,7 @@ const CartSection = styled.div`
 const ProductCard = (props) => {
     const {title, image, description, price, category, rating} = props
     const { cart, setCart } = useContext(CartContext)
-    const [ item, setItem ] = useState({})
+    const [ checkOut, setCheckOut ] = useState(false)
     const [Qty, setQty] = useState({value: 1})
     
     
@@ -55,17 +56,17 @@ const ProductCard = (props) => {
         const newProps = {...props}
         newProps.quantity = Qty.value 
         setCart([...cart, newProps])
+        // getTotal()
     }
 
     const updateQty = () => {
         const vaildateItem = cart.findIndex((cartItem) => cartItem.id===props.id )
         if(cart[vaildateItem].id === props.id) {
-            console.log(Qty.value)
             const stateCopy = [...cart]
             const newQty = cart[vaildateItem].quantity + Qty.value
             stateCopy[vaildateItem] = {...stateCopy[vaildateItem], quantity: newQty}
             setCart(stateCopy)
-            
+            // getTotal()
             console.log(cart) 
         }
     }
@@ -77,12 +78,19 @@ const ProductCard = (props) => {
             // console.log("CheckIfItemExist")
         }
         else {
-            console.log(vaildateItem)
             // console.log("updateQty")
             updateQty()
         }
     }
+    const mathForTotal = (item,index) => {
+        
+    }
+    const getTotalForFirstEntry = () => {
+        const total = cart.map((item,index) => (item.price * item.quantity).toFixed(2))
 
+        return 
+        // console.log(total)
+    }
     const addToCart = () => {
         
         // console.log(cart)
@@ -96,45 +104,40 @@ const ProductCard = (props) => {
         } else {
             
             appendQtyToCart()
+            // getTotalForFirstEntry()
             
-        }   
+        }
     }
 
-    const deleteItemFromCart = (item) => {
-        console.log(cart)
-        const stateCopy = [...cart]
-        const index = stateCopy.findIndex((cartItem) => 
-            { console.log(`Cart ID= ${cartItem.id} Props ID= ${item}`)
-            return cartItem.id===props.id}
-            )
-        console.log(` index: ${index}`)
-        stateCopy.splice(index)
-        setCart(stateCopy)
-    }
+    
   return (
     <ProductCardDiv>
-        <ProductCardContent>
-            <ProductImg src={image} alt={title} />
-            <div>
-                <h3>{title}</h3>
-                <p>${price}</p>
+        {!checkOut ? (
+            <ProductCardContent>
+                <ProductImg src={image} alt={title} />
                 <div>
-                    <Rating {...rating} />
+                    <h2>{title}</h2>
+                    <p>${price}</p>
+                    <div>
+                        <Rating {...rating} />
+                    </div>
+                    <p>{description}</p>
+                    {/* Need to make this its on component */}
+                    {/* defaultValue make react keep the new Qty as the new default selected value so the user doesn't have to keep changing it back */}
+                    <select name="Qty"  onChange={convertQtyToInt}>   
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <StyledButton onClick={() => addToCart()}>Add to Cart</StyledButton>
                 </div>
-                <p>{description}</p>
-                {/* Need to make this its on component */}
-                {/* defaultValue make react keep the new Qty as the new default selected value so the user doesn't have to keep changing it back */}
-                <select name="Qty"  onChange={convertQtyToInt}>   
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-                <StyledButton onClick={() => addToCart()}>Add to Cart</StyledButton>
-            </div>
-        </ProductCardContent>
+            </ProductCardContent>
+        ) : ( 
+            <Checkout />
+        )}
         <div>
-            <CartWidget cart= {cart} deleteItemFromCart = {deleteItemFromCart}/>
+            <CartWidget checkOut={checkOut} setCheckOut={setCheckOut}/>
         </div>
         {/* <Test /> */}
     </ProductCardDiv>

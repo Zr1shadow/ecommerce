@@ -2,7 +2,7 @@ import styled from "styled-components"
 import '../App.css'
 import { useContext, useEffect } from "react"
 import { CartContext } from "../context/CartContext"
-import { StyledNavLink } from "./StyledComponents"
+import { StyledNavLink, StyledButton } from "./StyledComponents"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 
@@ -36,7 +36,7 @@ const Line = styled.hr`
 `
 
 
-const CartWidget = () => {
+const CartWidget = ({setCheckOut, checkOut}) => {
   const {cart, setCart} = useContext(CartContext)
   useEffect(() => {
     
@@ -52,6 +52,31 @@ const deleteItemFromCart = (item) => {
   stateCopy.splice(index, 1)
   setCart(stateCopy)
 }
+
+const getTotalForFirstEntry = () => {
+  return(cart.map((item,index) => (item.price * item.quantity).toFixed(2)))
+  // console.log(total)
+}
+
+const addArrayItem = (total, num) =>{
+  const test = (parseFloat(total) + parseFloat(num)).toFixed(2)
+  console.log(test)
+  return  test
+}
+const getTotalForArray = () => {
+  const total = []
+  cart.map((item,index) => {
+    total.push((item.price * item.quantity).toFixed(2))
+    console.log(total)
+    // total.push(price)
+  })
+
+  return total.reduce(addArrayItem)
+  
+
+  // total.push(cart.map((item,index) => (item.price * item.quantity).toFixed(2)))  
+}
+
   return (
     <CartContainer>
       <h2>Cart({cart.length})</h2>
@@ -69,7 +94,16 @@ const deleteItemFromCart = (item) => {
       ) : (
         <div> No Items in Cart yet</div>
       )}
-      <StyledNavLink to='/Home'>CheckOut</StyledNavLink>
+      <p>
+        Total: ${cart.length  
+        ? cart.length === 1 ? getTotalForFirstEntry() : getTotalForArray()
+        : '0'
+      }
+                
+       </p>
+      {/* <p>Total: ${cart.reduce((x, cartItem) => x + cartItem.price * cartItem.quantity).toFixed(2)}</p> */}
+      {/* <StyledNavLink to='#'  onClick={() => setCheckout(true)}>CheckOut</StyledNavLink> */}
+      <StyledButton onClick={() => setCheckOut(checkOut => !checkOut)}>Checkout</StyledButton>
     </CartContainer>
   )
 }
