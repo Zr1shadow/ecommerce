@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import Header from './component/Nav/Header';
 import LandingPage from './component/LandingPage';
 import Home from './component/Home'
@@ -8,7 +8,7 @@ import { CartProvider } from './context/CartContext';
 function App() {
   return (
     <CartProvider>
-      <BrowserRouter>
+      <HashRouter>
           <Routes>
             <Route index element={<LandingPage />} />
             <Route path='/Home' element={<Home />} />
@@ -16,7 +16,7 @@ function App() {
             <Route path="Home/:category/:id" exact element={<Product />} />
             <Route path="*" element={<Home />} />
           </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </CartProvider>
   );
 }
